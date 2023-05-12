@@ -6,6 +6,9 @@ module NERP_demo_top(
 	input down_btn,
 	input enable_btn,
 	input rst_btn,
+	input heartrate1,
+	input heartrate2,
+	input heartrate3,
 	input wire clk,			//master clock = 50MHz
 	input wire clr,			//right-most pushbutton for reset
 	output wire [6:0] seg,	//7-segment display LEDs
@@ -105,7 +108,22 @@ reg [17:0] pos;
 initial pos = 0;
 always @ (posedge dclk)
 begin
+    if (heartrate1 == 0 && heartrate2 == 0 && heartrate3 == 1)
+    begin
 		pos <= pos + 1;
+	end
+    if (heartrate1 == 0 && heartrate2 == 1 && heartrate3 == 1)
+	begin
+	   pos <= pos + 2;
+	end
+    if (heartrate1 == 1 && heartrate2 == 1 && heartrate3 == 1)
+	begin
+	   pos <= pos + 1;
+	end
+    if (heartrate1 == 0 && heartrate2 == 0 && heartrate3 == 0)
+	begin
+	   pos <= pos + 3;
+	end
 end
 
 reg [9:0] pipe_pos;
@@ -113,7 +131,7 @@ initial pipe_pos = 0;
 always @ (posedge pos[17])
 begin
 	if(!enable && state == 2 && pipe_pos < 345)
-		pipe_pos <= pipe_pos+1;
+		pipe_pos <= pipe_pos+1; ///////////////////////////////////////////
 	else if(!enable && state == 2)
 	begin
 		pipe_pos <= 0;
@@ -138,6 +156,7 @@ initial high_score = 0;
 
 // generate 7-segment clock & display clock
 clockdiv U1(
+    
 	.clk(clk),
 	.clr(clr),
 	.segclk(segclk),
@@ -167,7 +186,10 @@ vga640x480 U3(
 	.vsync(vsync),
 	.red(red),
 	.green(green),
-	.blue(blue)
+	.blue(blue),
+	.heartrate1(heartrate1),
+	.heartrate2(heartrate2),
+	.heartrate3(heartrate3)
 	);
 	
 bird flappy(
