@@ -112,15 +112,15 @@ begin
     begin
 		pos <= pos + 1;
 	end
-    if (heartrate1 == 0 && heartrate2 == 1 && heartrate3 == 1)
+    elif (heartrate1 == 0 && heartrate2 == 1 && heartrate3 == 1)
 	begin
 	   pos <= pos + 2;
 	end
-    if (heartrate1 == 1 && heartrate2 == 1 && heartrate3 == 1)
+    elif (heartrate1 == 1 && heartrate2 == 1 && heartrate3 == 1)
 	begin
 	   pos <= pos + 1;
 	end
-    if (heartrate1 == 0 && heartrate2 == 0 && heartrate3 == 0)
+    elif (heartrate1 == 0 && heartrate2 == 0 && heartrate3 == 0)
 	begin
 	   pos <= pos + 3;
 	end
