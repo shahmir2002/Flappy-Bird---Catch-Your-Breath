@@ -31,7 +31,7 @@ module bird(clk, rst, enable, jump, down, state, fall_accel, y_coord
 	 if(enable && state == 2)
 		begin
 		//bird flight start
-			if(jump && vel < 5)
+			if(jump && vel < 3)
 			begin
 				vel <= vel + 'd10;
 			end
@@ -39,7 +39,7 @@ module bird(clk, rst, enable, jump, down, state, fall_accel, y_coord
 			else if ( vel > -4)
 				vel <= vel - 1;//fall_accel;
 		//bird flight start_down
-			if(down && vel < 2)
+			if(down && vel > -1)
 			begin
 				vel <= vel - 'd10;
 			end
