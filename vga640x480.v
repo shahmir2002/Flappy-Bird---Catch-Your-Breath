@@ -15,8 +15,17 @@ module vga640x480(
 	output reg [1:0] blue,	//blue vga output
 	input heartrate1,
 	input heartrate2,
-	input heartrate3
+	input heartrate3,
+	input [1:0] state
 	);
+
+parameter [7:0] G = 8'b11111000;
+parameter [7:0] A = 8'b10001000;
+parameter [7:0] M = 8'b10101000;
+parameter [7:0] E = 8'b10011000;
+parameter [7:0] O = 8'b11111000;
+parameter [7:0] V = 8'b11111000;
+parameter [7:0] R = 8'b10101000;
 
 // video structure constants
 parameter hpixels = 800;// horizontal pixels per line
@@ -119,15 +128,13 @@ reg o;
 initial o = 0;
 reg xx;
 initial xx = 0;
-reg bg;
-initial bg=0;
+
 
 always @ (*)
 begin
 case(current_score)
 0:
 begin
-    bg= ~bg;
 	a = 0;
 	b = 0;
 	c = 0;
@@ -427,8 +434,92 @@ always @(*)
 begin
 
 	// first check if we're within vertical active video range
-	if (vc >= vbp && vc < vfp)
-	begin
+if (vc >= vbp && vc < vfp)
+begin
+	if (state == 0)  
+    begin
+//        red = 3'b000;
+//        green = 3'b000;
+//        blue = 2'b00;
+//        if(( (((hc>(hbp+60))&&(hc<(hbp+100))) &&  ( (vc>(vbp+200) && vc<(vbp+210)) || (vc>(vbp+260)&& vc<(vbp+270)) ) )   || (((hc>(hbp+60))&&(hc<(hbp+70))) && (vc>(vbp+200)&& vc<(vbp+270))) || (((hc>(hbp+90))&&(hc<(hbp+100))) && (vc>(vbp+200)&& vc<(vbp+220)))  ) || ((vc>(vbp+230)&& vc<(vbp+240)) && (hc>(hbp+80)&& hc<(hbp+100))))
+//              begin
+//              red=3'b111;
+//              green=3'b111;
+//              blue=2'b11 ; 
+//              end
+//        else if (( (((hc>(hbp+590))&&(hc<(hbp+630))) &&  ( (vc>(vbp+30) && vc<(vbp+40))|| (vc>(vbp+60)&& vc<(vbp+70)) || (vc>(vbp+90)&& vc<(vbp+100)) ) )   || (((hc>(hbp+590))&&(hc<(hbp+600))) && (vc>(vbp+30)&& vc<(vbp+100))) || (((hc>(hbp+620))&&(hc<(hbp+630))) && (vc>(vbp+30)&& vc<(vbp+100)))  ))
+//            begin
+//              red=3'b111;
+//              green=3'b111;
+//              blue=2'b11 ;
+//            end
+//        else if (( (((hc>(hbp+590))&&(hc<(hbp+630))) &&  ( (vc>(vbp+30) && vc<(vbp+40))|| (vc>(vbp+60)&& vc<(vbp+70)) || (vc>(vbp+90)&& vc<(vbp+100)) ) )   || (((hc>(hbp+590))&&(hc<(hbp+600))) && (vc>(vbp+30)&& vc<(vbp+100))) || (((hc>(hbp+620))&&(hc<(hbp+630))) && (vc>(vbp+30)&& vc<(vbp+100)))  ))
+//            begin
+//              red=3'b111;
+//              green=3'b111;
+//              blue=2'b11 ;
+//            end
+    if ((hc > 600)|| (hc < 40) || (vc > 440) || (vc <40))
+                begin
+                red <= 3'b000;    
+                green <= 3'b000;    
+                blue <= 2'b00;    
+                end
+    
+       else if (
+         
+           ( hc>=119+70 && hc<=210+70 && vc>=130 && vc<=150 ) ||
+            ( hc>=119+70 && hc<=139+70 && vc>=130 && vc<=230 )||
+           ( hc>=119+70 && hc<=210+70 && vc>=210 && vc<=230 )||
+           ( hc>=190+70 && hc<=210+70 && vc>=160 && vc<=230 )||
+            ( hc>=169+70 && hc<=210+70 && vc>=160 && vc<=180 )|| 
+            
+            ( hc>=219+70 && hc<=310+70 && vc>=130 && vc<=150 )||
+            ( hc>=219+70 && hc<=239+70 && vc>=130 && vc<=230 )||
+            ( hc>=290+70 && hc<=310+70 && vc>=130 && vc<=230 )||
+           ( hc>=219+70 && hc<=310+70 && vc>=170 && vc<=190 )||
+           
+            ( hc>=319+70 && hc<=410+70 && vc>=130 && vc<=150 )||
+            ( hc>=319+70 && hc<=339+70 && vc>=130 && vc<=230 )||
+           ( hc>=354+70 && hc<=374+70 && vc>=130 && vc<=180 )||
+           ( hc>=390+70 && hc<=410+70 && vc>=130 && vc<=230 )||
+           
+           ( hc>=419+70 && hc<=510+70 && vc>=130 && vc<=150 )||
+           ( hc>=419+70 && hc<=439+70 && vc>=130 && vc<=230 )||
+           ( hc>=419+70 && hc<=469+70 && vc>=170 && vc<=190 )||
+           (hc>=419+70 && hc<=510+70 && vc>=210 && vc<=230 )||
+           
+            ( hc>=119+70 && hc<=210+70 && vc>=250 && vc<=270 )||
+           ( hc>=119+70 && hc<=139+70 && vc>=250 && vc<=350 )||
+            (hc>=119+70 && hc<=169+70 && vc>=290 && vc<=310 )||
+           ( hc>=119+70 && hc<=210+70 && vc>=330 && vc<=350 )||
+           
+            ( hc>=219+70 && hc<=310+70 && vc>=250 && vc<=270 ) ||
+           ( hc>=219+70 && hc<=239+70 && vc>=250 && vc<=350 ) ||
+           ( hc>=290+70 && hc<=310+70 && vc>=250 && vc<=350 )||
+           
+           ( hc>=315+80 && hc<=410+80 && vc>=250 && vc<=270 ) ||
+           ( hc>=319+80 && hc<=339+80 && vc>=250 && vc<=350 ) ||
+           ( hc>=315+80 && hc<=410+80 && vc>=320 && vc<=350 )||
+            ( hc>=390+80 && hc<=410+80 && vc>=250 && vc<=350 )          
+            
+       )
+       begin 
+        red <= 3'b111;    
+        green <= 3'b000;    
+        blue <= 2'b00; 
+       end
+       
+       else
+        begin
+            red <= 3'b000; 
+            blue <= 2'b00; 
+            green <= 3'b00; 
+        end    
+          
+    end 
+  else if (state == 2 || state==1)
+  begin
 	    if (e && ((((hc>(hbp+590))&&(hc<(hbp+630))) &&  ( (vc>(vbp+30) && vc<(vbp+40))|| (vc>(vbp+60)&& vc<(vbp+70)) || (vc>(vbp+90)&& vc<(vbp+100)) ) )   || (((hc>(hbp+590))&&(hc<(hbp+600))) && (vc>(vbp+40)&& vc<(vbp+60))) || (((hc>(hbp+620))&&(hc<(hbp+630))) && (vc>(vbp+70)&& vc<(vbp+90))) ) )
         begin
                red = 3'b001;
@@ -507,19 +598,22 @@ begin
 				blue = 2'b11;
         end
            
-        else if ( (heartrate1 == 1 || heartrate2==1 || heartrate3==1) && ((((hc>(hbp+20))&&(hc<(hbp+30))) && (vc>(vbp+70)&& vc<(vbp+100)))))
+        else if (( (heartrate1 == 0 && heartrate2==0 && heartrate3==0)||(heartrate1 == 1 && heartrate2==1 && heartrate3==1)||
+        (heartrate1 == 0 && heartrate2==0 && heartrate3==1)||
+        (heartrate1 == 0 && heartrate2==1 && heartrate3==1) )&& ((((hc>(hbp+20))&&(hc<(hbp+30))) && (vc>(vbp+70)&& vc<(vbp+100)))))
         begin
             red = 3'b001;
             green = 3'b000;
             blue = 2'b11  ; 
         end   
-        else if ((heartrate2 == 1 || heartrate3==1) && ((((hc>(hbp+35))&&(hc<(hbp+45))) && (vc>(vbp+60)&& vc<(vbp+100)))) )
+        else if (( (heartrate1 == 0 && heartrate2==0 && heartrate3==1)||
+        (heartrate1 == 0 && heartrate2==1 && heartrate3==1) )&& ((((hc>(hbp+35))&&(hc<(hbp+45))) && (vc>(vbp+60)&& vc<(vbp+100)))) )
         begin
             red = 3'b001;
             green = 3'b000;
             blue = 2'b11  ;
         end
-        else if (heartrate3 == 1 && ((((hc>(hbp+50))&&(hc<(hbp+60))) && (vc>(vbp+50)&& vc<(vbp+100)))))                 
+        else if ((heartrate1 == 0 && heartrate2==1 && heartrate3==1) && ((((hc>(hbp+50))&&(hc<(hbp+60))) && (vc>(vbp+50)&& vc<(vbp+100)))))                 
         begin
              red = 3'b001;
             green = 3'b000;
@@ -532,30 +626,37 @@ begin
 		// -----------------
 		
         // BIRD
-        else if (vc > (480 - bird_coord) - 20 && vc < (480 - bird_coord) + 20 && hc > hbp + 90 && hc < hbp + 140)
-        begin
-            if (hc > hbp + 130 && hc < hbp + 140 && vc > (480 - bird_coord) - 10 && vc < (480 - bird_coord))
-            begin
-                // Beak (small box)
-                red = 3'b111;
-                green = 3'b111;
-                blue = 2'b00;
-            end
-            else if (hc > hbp + 110 && hc < hbp + 130 && vc > (480 - bird_coord) - 20 && vc < (480 - bird_coord))
-            begin
-                // Body (square)
-                red = 3'b111;
-                green = 3'b000;
-                blue = 2'b11;
-            end
-            else if (hc > hbp + 125 && hc < hbp + 135 && vc > (480 - bird_coord) && vc < (480 - bird_coord) + 10)
-            begin
-                // Feet (small boxes)
-                red = 3'b111;
-                green = 3'b000;
-                blue = 2'b11;
-            end
-        end
+//        else if(vc > (480-bird_coord)-20 && vc < (480-bird_coord)+20 && hc > hbp+90 && hc < hbp+140)
+//            begin
+                else if (hc > hbp+120 && hc < hbp+125 && vc > (480-bird_coord)-5 && vc < (480-bird_coord))
+                begin
+                    // Beak (small box)
+                    red = 3'b000;
+                    green = 3'b000;
+                    blue = 2'b11;
+                end
+                else if (hc > hbp+115 && hc < hbp+118 && vc > (480-bird_coord)-8 && vc < (480-bird_coord)-5)
+                begin
+                    // eye (small box)
+                    red = 3'b000;
+                    green = 3'b000;
+                    blue = 2'b11;
+                end
+                else if (hc > hbp+90 && hc < hbp+120 && vc > (480-bird_coord-15) && vc < (480-bird_coord+12))
+                begin
+                    // Body (square)
+                    red = 3'b111;
+                    green = 3'b000;
+                    blue = 2'b11;
+                end
+                else if (hc > hbp+80 && hc < hbp+90 && vc > (480-bird_coord) && vc < (480-bird_coord)+5)
+                begin
+                    // Tail (small rectangle)
+                    red = 3'b111;
+                    green = 3'b000;
+                    blue = 2'b00;
+                end
+//            end
 			
 		//pipes
 		
@@ -588,24 +689,20 @@ begin
 		// display cyan bar
 		else if (hc >= (hbp) && hc < (hbp+640))
 		begin
-		if (bg==1) begin
+
 			red = 3'b111;
 			green = 3'b111;
 			blue = 2'b11;
-		end
-		else if (bg ==  0)
+			if (current_score==15 )
 			begin
 			    red = 3'b101;
-                green = 3'b111;
+                green = 3'b110;
 			    blue = 2'b10; 
-			end   
-		end
+			end 
 		
-//		else if (current_score == 15)
-//		begin
-//		    red = 3'b010;
-//		end
-		// we're outside active horizontal range so display black
+		end
+		  
+	
 		else
 		begin
 			red = 0;
@@ -613,6 +710,58 @@ begin
 			blue = 0;
 		end
 	end
+	else if(state==3)
+	   begin
+    
+       if (
+         
+                ( hc>=200 && hc<=300 && vc>= 300 && vc<=320 ) ||
+              ( hc>=200 && hc<=300 && vc>= 340 && vc<=360 ) ||
+              ( hc>=200 && hc<=300 && vc>= 380 && vc<=400 ) ||
+              ( hc>=200 && hc<=220 && vc>= 320 && vc<=340 ) ||
+              ( hc>=280 && hc<=300 && vc>= 360 && vc<=380 ) ||
+              
+              ( hc>=310 && hc<=410 && vc>=300 && vc<=320 ) ||
+              ( hc>=350 && hc<=370 && vc>=320 && vc<=400 ) ||
+
+              ( hc>=420 && hc<=520 && vc>=300 && vc<=320 ) ||
+              ( hc>=420 && hc<=440 && vc>=320 && vc<=400 ) ||
+              ( hc>=500 && hc<=520 && vc>=320 && vc<=400 ) ||
+              ( hc>=440 && hc<=500 && vc>=340 && vc<=360 ) ||
+              
+              ( hc>=530 && hc<=600 && vc>=300 && vc<=320 ) ||
+              ( hc>=530 && hc<=550 && vc>=320 && vc<=400 ) ||
+              ( hc>=530 && hc<=630 && vc>=340 && vc<=360 ) ||
+              ( hc>=620 && hc<=630 && vc>=360 && vc<=400 ) ||
+              ( hc>=590 && hc<=600 && vc>=300 && vc<=340 ) || 
+              
+                ( hc>=640 && hc<=740 && vc>=300 && vc<=320 ) ||
+              ( hc>=680 && hc<=700 && vc>=320 && vc<=400 )      
+            
+       )
+       begin 
+        red <= 3'b111;    
+        green <= 3'b000;    
+        blue <= 2'b00; 
+       end
+       
+       else
+        begin
+            red <= 3'b000; 
+            blue <= 2'b00; 
+            green <= 3'b00; 
+        end    
+          
+	       
+	       
+	       
+	       
+	       
+	       
+	   end
+	end
+	
+
 	// we're outside active vertical range so display black
 	else
 	begin
